@@ -1,0 +1,19 @@
+
+
+# configMap:
+#     name: "index-html-configmap"
+deployment:
+    image: "vikas031/nginx:1.20_11"
+
+version: v3
+
+##to change
+name: "service3" 
+namespace: default
+path: "/service3/"
+#also change the text for nginx response in configmap.yaml
+#mountPath in deploy.yaml
+#may be ingress.yaml for domain and path
+
+
+

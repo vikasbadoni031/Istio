@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{.Values.name }}
+      version: {{ .Values.version }}
+  replicas: 2 
+  template:
+    metadata:
+      labels:
+        app: {{.Values.name }}
+        version: {{ .Values.version }}
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+      containers:
+      - name: {{.Values.name }}
+        image: {{.Values.deployment.image }}
+        ports:
+        - containerPort: 80
+        volumeMounts:
+          - name: nginx-index-file
+            mountPath: /usr/share/nginx/html/service
+      volumes:
+      - name: nginx-index-file
+        configMap:
+          name: {{ .Values.name }}

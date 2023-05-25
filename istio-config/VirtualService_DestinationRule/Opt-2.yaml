@@ -1,0 +1,22 @@
+# testing routing based on hostname
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: echo-service-ingress
+spec:
+  hosts: 
+  - '*'
+  gateways:
+  - echo-gateway
+  http:
+  - match:
+    - headers:
+        host:
+          exact: servicev1  # if the host header matches to be servicev1
+    route:
+    - destination:
+        host: servicev3      # this is a kubernetes service name
+  - route:
+    - destination:
+        host: servicev1

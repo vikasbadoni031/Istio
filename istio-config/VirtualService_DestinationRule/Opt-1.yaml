@@ -1,0 +1,19 @@
+# traffic weight disctribution across 2 services. This works without DR.
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: echo-service-ingress
+spec:
+  hosts: 
+  - '*'
+  gateways:
+  - echo-gateway
+  http:
+  - route:
+    - destination:
+        host: servicev1    #this is a detination service name (kubernetes service)
+      weight: 50
+    - destination:
+        host: servicev3
+      weight: 50

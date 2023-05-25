@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: servicev1
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: service
+      version: {{ .Values.version }}
+  replicas: 2 
+  template:
+    metadata:
+      labels:
+        app: service
+        version: {{.Values.version }}
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+      containers:
+      - name: servicev1
+        image: {{.Values.deployment.image }}
+        ports:
+        - containerPort: 80
+        volumeMounts:
+          - name: nginx-index-file
+            mountPath: /usr/share/nginx/html/service
+      volumes:
+      - name: nginx-index-file
+        configMap:
+          name: servicev1
